@@ -1,0 +1,821 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+<variables>
+<variable id="T2wGS!zMW7uNJQuk9zgq">referenceHeading</variable>
+<variable id="y3lmCOt|E!do_:OuQ^DR">PValue</variable>
+<variable id="C$Lg6NwY7kEZxa=0R}c|">vy</variable>
+<variable id="z;K59[);G3A-^^ut@4ZK">vx</variable>
+<variable id="c?_NMZ~O06sZ]^:OUc@F">omega</variable>
+<variable id=":!*]8P))Gb47:!V@vLW1">lockHeading</variable>
+<variable id="@Pno$6$IC.:=Mb$?#,S}">headingError</variable>
+<variable id="tUZ;%P`6PAkp#t.:2[}V">currentHeading</variable>
+<variable id="QeK|#r)i`z.IW/%)RqA$">FrontLeftVel</variable>
+<variable id="zCm8P-E*(#DT}Qhpg#R5">BackLeftVel</variable>
+<variable id="_2V/#MrS;50sg{zm/!^H">FrontRightVel</variable>
+<variable id="[heEM`jT-JD8QXrC^($`">BackRightVel</variable>
+<variable id="PZ;MHbTrU7-X=Hxk1P66">MaximumValue</variable>
+</variables>
+<block type="procedures_defnoreturn" id="OpN8!1beqW{8Bw6M/?m+" deletable="false" x="274" y="-117">
+<field name="NAME">runOpMode</field>
+<comment pinned="false" h="127" w="554">This OpMode offers POV (point-of-view) style TeleOp control for a direct drive robot.  In this POV mode, the left joystick (up and down) moves the robot forward and back, and the right joystick (left and right) spins the robot left (counterclockwise) and right (clockwise).</comment>
+<data>{"commentPositionLeft":-21,"commentPositionTop":-151}</data>
+<statement name="STACK">
+<block type="comment" id="2E)2A*`b^PiWrgwVLCzD">
+<field name="COMMENT">Setup Motors and Sensors, and initialize variables</field>
+<next>
+<block type="imu_initialize" id="I}m^.1a,^g4ypOPZ}UZp">
+<field name="IDENTIFIER">imuAsIMU</field>
+<comment pinned="false" h="120" w="250">Initialize the IMU with non-default settings. To use this block, plug one of the "new IMU.Parameters" blocks into the parameters socket.</comment>
+<data>{"IDENTIFIER":"imu"}</data>
+<value name="PARAMETERS">
+<block type="imuParameters_create" id="|a;cQ41X1h|*GF@gc7Gx">
+<comment pinned="false" h="150" w="325">Create a Parameters object for use with an IMU in a REV Robotics Control Hub or Expansion Hub, specifying the hub's orientation on the robot via the direction that the REV Robotics logo is facing and the direction that the USB ports are facing.</comment>
+<value name="IMU_ORIENTATION_ON_ROBOT">
+<block type="revHubOrientationOnRobot_create1" id="m~QT[*G{/Qvhz0;j6e2|">
+<value name="LOGO_FACING_DIRECTION">
+<shadow type="revHubOrientationOnRobot_typedEnum_logoFacingDirection" id="WE+p0Dd|(*4k+b^V-*f:">
+<field name="LOGO_FACING_DIRECTION">UP</field>
+</shadow>
+</value>
+<value name="USB_FACING_DIRECTION">
+<shadow type="revHubOrientationOnRobot_typedEnum_usbFacingDirection" id="ekxm?Nmz)QpwGy2(Y6SE">
+<field name="USB_FACING_DIRECTION">FORWARD</field>
+</shadow>
+</value>
+</block>
+</value>
+</block>
+</value>
+<next>
+<block type="variables_set" id="9aQCeYB+863H]iFRBW+1">
+<field name="VAR" id="T2wGS!zMW7uNJQuk9zgq">referenceHeading</field>
+<value name="VALUE">
+<block type="yawPitchRollAngles_getPropertyWithAngleUnit_Number" id="ub+^qRsiDs`CVcn|~M)Q">
+<field name="PROP">Yaw</field>
+<value name="YAW_PITCH_ROLL_ANGLES">
+<block type="imu_getProperty_YawPitchRollAngles" id="d`TMnl,ILei2ov:kaHi1">
+<field name="IDENTIFIER">imuAsIMU</field>
+<field name="PROP">RobotYawPitchRollAngles</field>
+<data>{"IDENTIFIER":"imu"}</data>
+</block>
+</value>
+<value name="ANGLE_UNIT">
+<shadow type="navigation_typedEnum_angleUnit" id="sKlqWYIKNLqM=20V1IDF">
+<field name="ANGLE_UNIT">DEGREES</field>
+</shadow>
+</value>
+</block>
+</value>
+<next>
+<block type="variables_set" id="$[=Cdz,EG.rhMo$@gdKZ">
+<field name="VAR" id="y3lmCOt|E!do_:OuQ^DR">PValue</field>
+<value name="VALUE">
+<block type="math_number" id="Hfq1nT@$H/-Up%fE$Us}">
+<field name="NUM">0</field>
+</block>
+</value>
+<next>
+<block type="linearOpMode_waitForStart" id=":K8^U;yjvZn8aWa~t|#1">
+<next>
+<block type="controls_if" id="V4vcz1^;$q.ACQvg4=Rg">
+<value name="IF0">
+<block type="linearOpMode_opModeIsActive" id="oU;fZnTXMMPG@9M!vA8m"/>
+</value>
+<statement name="DO0">
+<block type="comment" id=":*~E^;jympAIAK*1RqqM">
+<field name="COMMENT">Put run blocks here.</field>
+<next>
+<block type="controls_whileUntil" id=";?u-rJ#FN3IEUo%rzP0!">
+<field name="MODE">WHILE</field>
+<value name="BOOL">
+<block type="linearOpMode_opModeIsActive" id="-(|WoGbw`fofYl;9=5+0"/>
+</value>
+<statement name="DO">
+<block type="comment" id="Fuqb6XE/M$N=-N{cj|Rw">
+<field name="COMMENT">Get Controller Input</field>
+<next>
+<block type="variables_set" id="TnZ|MUpac*cukmk#34Su">
+<field name="VAR" id="C$Lg6NwY7kEZxa=0R}c|">vy</field>
+<value name="VALUE">
+<block type="gamepad_getProperty_Number" id="UAy;Iy@bT2AJc$l#Br+L">
+<field name="IDENTIFIER">gamepad1</field>
+<field name="PROP">LeftStickY</field>
+<data>{"IDENTIFIER":"gamepad1"}</data>
+</block>
+</value>
+<next>
+<block type="variables_set" id="f[oyKTik9#K;v4|xxIUF">
+<field name="VAR" id="z;K59[);G3A-^^ut@4ZK">vx</field>
+<value name="VALUE">
+<block type="gamepad_getProperty_Number" id="75(1y@-5]LiV_0YJ0LMc">
+<field name="IDENTIFIER">gamepad1</field>
+<field name="PROP">RightStickX</field>
+<data>{"IDENTIFIER":"gamepad1"}</data>
+</block>
+</value>
+<next>
+<block type="variables_set" id="48d73TOt21[q+RWj,#:l">
+<field name="VAR" id="c?_NMZ~O06sZ]^:OUc@F">omega</field>
+<value name="VALUE">
+<block type="gamepad_getProperty_Number" id="%hLr:R^XEGT#!okUP6gZ">
+<field name="IDENTIFIER">gamepad1</field>
+<field name="PROP">LeftStickY</field>
+<data>{"IDENTIFIER":"gamepad1"}</data>
+</block>
+</value>
+<next>
+<block type="comment" id="ver|rd0Daz8qr.iR3Ir|">
+<field name="COMMENT">Correct for Perturbations</field>
+<next>
+<block type="controls_if" id="ii}ggixe6|(Ck*oMRH]5">
+<value name="IF0">
+<block type="logic_compare" id="*Hw/kzF:pp[9V)a08JJK">
+<field name="OP">LT</field>
+<value name="A">
+<block type="math_single" id="7t:$8L+j:U_!#-}Gyf;a">
+<field name="OP">ABS</field>
+<value name="NUM">
+<shadow type="math_number" id="!fHJb}O|y4AV2Or01z5E">
+<field name="NUM">9</field>
+</shadow>
+<block type="variables_get" id="K0Tqyc^g_fyERydpQ?yR">
+<field name="VAR" id="z;K59[);G3A-^^ut@4ZK">vx</field>
+</block>
+</value>
+</block>
+</value>
+<value name="B">
+<block type="math_number" id="RLA$*;=J6Mf:Z*wW1om0">
+<field name="NUM">0.07</field>
+</block>
+</value>
+</block>
+</value>
+<statement name="DO0">
+<block type="variables_set" id=".kT(1V#P-}Yjo#mdZ[v}">
+<field name="VAR" id="z;K59[);G3A-^^ut@4ZK">vx</field>
+<value name="VALUE">
+<block type="math_number" id="FrP@uvSbn${1{]v/yM--">
+<field name="NUM">0</field>
+</block>
+</value>
+</block>
+</statement>
+<next>
+<block type="controls_if" id="$T5Nozg`wF9.?x;lMOTy">
+<value name="IF0">
+<block type="logic_compare" id="n%c*@Hw}Oq2h](dT0.+]">
+<field name="OP">LT</field>
+<value name="A">
+<block type="math_single" id="tp9lziqa8N7Alx,@P.r3">
+<field name="OP">ABS</field>
+<value name="NUM">
+<shadow type="math_number" id="_[8IfNW8De58EW}|5PA3">
+<field name="NUM">9</field>
+</shadow>
+<block type="variables_get" id="p_m]@Upx+qUfO4^p-sT}">
+<field name="VAR" id="C$Lg6NwY7kEZxa=0R}c|">vy</field>
+</block>
+</value>
+</block>
+</value>
+<value name="B">
+<block type="math_number" id="ZT=j|N`vKSU-iVR_Db}L">
+<field name="NUM">0.07</field>
+</block>
+</value>
+</block>
+</value>
+<statement name="DO0">
+<block type="variables_set" id="iv1Kip|C|q{Xptnk}pyf">
+<field name="VAR" id="C$Lg6NwY7kEZxa=0R}c|">vy</field>
+<value name="VALUE">
+<block type="math_number" id="rUJ26m#^nmItnD%A%-Y9">
+<field name="NUM">0</field>
+</block>
+</value>
+</block>
+</statement>
+<next>
+<block type="comment" id="H.ZwX0S}w_LIDcx^;^~d">
+<field name="COMMENT">Determine if Heading should be Locked</field>
+<next>
+<block type="controls_if" id="AM8u{F{lG:f5|wz}{]`4">
+<mutation else="1"/>
+<value name="IF0">
+<block type="logic_compare" id="_/E{:)3.YH:MzaTaI#G]">
+<field name="OP">LT</field>
+<value name="A">
+<block type="math_single" id="2SVW61ADiBIU?Xt`L-nv">
+<field name="OP">ABS</field>
+<value name="NUM">
+<shadow type="math_number" id="pkgY%gHVxd2ABe$tM^%D">
+<field name="NUM">9</field>
+</shadow>
+<block type="variables_get" id="#$m{~@^GL#`n~G_laTNP">
+<field name="VAR" id="c?_NMZ~O06sZ]^:OUc@F">omega</field>
+</block>
+</value>
+</block>
+</value>
+<value name="B">
+<block type="math_number" id="1B{upj.^#LK6;BZ;3]Up">
+<field name="NUM">0.07</field>
+</block>
+</value>
+</block>
+</value>
+<statement name="DO0">
+<block type="variables_set" id="^Efp7*{Q2Q^3/FCuaSFk">
+<field name="VAR" id="c?_NMZ~O06sZ]^:OUc@F">omega</field>
+<value name="VALUE">
+<block type="math_number" id="*SxaZxjMS{?Ae5v#5ZW5">
+<field name="NUM">0</field>
+</block>
+</value>
+<next>
+<block type="controls_if" id="l+OZn?ll^3Lh.!2lf4$k">
+<value name="IF0">
+<block type="logic_compare" id="2oV!J5JSDq+VmJ0]L/*7">
+<field name="OP">EQ</field>
+<value name="A">
+<block type="variables_get" id="Mk+R2r:0{3L!mZ+:KCGr">
+<field name="VAR" id=":!*]8P))Gb47:!V@vLW1">lockHeading</field>
+</block>
+</value>
+<value name="B">
+<block type="logic_boolean" id="v~`rQwO.s8W^O![k29oP">
+<field name="BOOL">FALSE</field>
+</block>
+</value>
+</block>
+</value>
+<statement name="DO0">
+<block type="variables_set" id="RDDjB)1*^L8O[|*?NY_d">
+<field name="VAR" id=":!*]8P))Gb47:!V@vLW1">lockHeading</field>
+<value name="VALUE">
+<block type="logic_boolean" id="udQCMYv%~Yod/6GTm=g3">
+<field name="BOOL">TRUE</field>
+</block>
+</value>
+<next>
+<block type="variables_set" id="*Nuklg}GtSRI@a1{l(So">
+<field name="VAR" id="T2wGS!zMW7uNJQuk9zgq">referenceHeading</field>
+<value name="VALUE">
+<block type="yawPitchRollAngles_getPropertyWithAngleUnit_Number" id="}_?uIddlsC5i:VR@L4c~">
+<field name="PROP">Yaw</field>
+<value name="YAW_PITCH_ROLL_ANGLES">
+<block type="imu_getProperty_YawPitchRollAngles" id="R)o{bT|`^*-dq]$897m8">
+<field name="IDENTIFIER">imuAsIMU</field>
+<field name="PROP">RobotYawPitchRollAngles</field>
+<data>{"IDENTIFIER":"imu"}</data>
+</block>
+</value>
+<value name="ANGLE_UNIT">
+<shadow type="navigation_typedEnum_angleUnit" id="mzlKI_E,Exu7EeL0@XDy">
+<field name="ANGLE_UNIT">DEGREES</field>
+</shadow>
+</value>
+</block>
+</value>
+</block>
+</next>
+</block>
+</statement>
+<next>
+<block type="variables_set" id="/9*ZbiNRw?oSdPgFqs2$">
+<field name="VAR" id="tUZ;%P`6PAkp#t.:2[}V">currentHeading</field>
+<value name="VALUE">
+<block type="yawPitchRollAngles_getPropertyWithAngleUnit_Number" id="$v~LU[|#s}Gh,D+UA8vu">
+<field name="PROP">Yaw</field>
+<value name="YAW_PITCH_ROLL_ANGLES">
+<block type="imu_getProperty_YawPitchRollAngles" id="zcOnXL8UV?KMTR~`2uJW">
+<field name="IDENTIFIER">imuAsIMU</field>
+<field name="PROP">RobotYawPitchRollAngles</field>
+<data>{"IDENTIFIER":"imu"}</data>
+</block>
+</value>
+<value name="ANGLE_UNIT">
+<shadow type="navigation_typedEnum_angleUnit" id="fBk%*kf=93IC#KqVY!AB">
+<field name="ANGLE_UNIT">DEGREES</field>
+</shadow>
+</value>
+</block>
+</value>
+</block>
+</next>
+</block>
+</next>
+</block>
+</statement>
+<statement name="ELSE">
+<block type="variables_set" id="NH|J0h,!Ywql.?+7Z{u/">
+<field name="VAR" id=":!*]8P))Gb47:!V@vLW1">lockHeading</field>
+<value name="VALUE">
+<block type="logic_boolean" id="7/n.`tzZ^r5jyJKGuWar">
+<field name="BOOL">FALSE</field>
+</block>
+</value>
+</block>
+</statement>
+<next>
+<block type="controls_if" id="QAsMaaQHZph8#Xb}3YUz">
+<value name="IF0">
+<block type="logic_compare" id="t!0wzZXU?4qNSz|@)$:d">
+<field name="OP">EQ</field>
+<value name="A">
+<block type="variables_get" id="Ri{v,O^Ejv%02qUx4D#C">
+<field name="VAR" id=":!*]8P))Gb47:!V@vLW1">lockHeading</field>
+</block>
+</value>
+<value name="B">
+<block type="logic_boolean" id="/#WVhsEQK~HxAkmz,!at">
+<field name="BOOL">TRUE</field>
+</block>
+</value>
+</block>
+</value>
+<statement name="DO0">
+<block type="variables_set" id="%WB^2*k3@zhvPV1d`LlQ">
+<field name="VAR" id="@Pno$6$IC.:=Mb$?#,S}">headingError</field>
+<value name="VALUE">
+<block type="navigation_angleUnit_normalize" id="M~?smgA`{O~)5usKj_!Y">
+<value name="ANGLE">
+<shadow type="math_number" id="Z):o$4KxWGK.{,,(VA7K">
+<field name="NUM">360</field>
+</shadow>
+<block type="math_arithmetic" id=":8*%fyL`Dnp/3CT/g==,">
+<field name="OP">MINUS</field>
+<value name="A">
+<shadow type="math_number" id="J!3x21L|JHJ0p,4y+j98">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="+z(ra.}4lOC6RA@IhH|x">
+<field name="VAR" id="T2wGS!zMW7uNJQuk9zgq">referenceHeading</field>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="2$$=L[^`93osr@d(4X2y">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="5j28K1x4)T|IVbQ|ixMJ">
+<field name="VAR" id="tUZ;%P`6PAkp#t.:2[}V">currentHeading</field>
+</block>
+</value>
+</block>
+</value>
+<value name="ANGLE_UNIT">
+<shadow type="navigation_typedEnum_angleUnit" id="r/EX_xBc/qz,HT*uPFzA">
+<field name="ANGLE_UNIT">DEGREES</field>
+</shadow>
+</value>
+</block>
+</value>
+<next>
+<block type="variables_set" id="UI]$ih.y9bh!B5l$}4Ml">
+<field name="VAR" id="c?_NMZ~O06sZ]^:OUc@F">omega</field>
+<value name="VALUE">
+<block type="math_arithmetic" id="LJw(RM!JySe{7Dp2v(DI">
+<field name="OP">MULTIPLY</field>
+<value name="A">
+<shadow type="math_number" id="EtJy5]Y=+.$_H.Q.M)%+">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id=",b}fEwe(:TPiL/q-nIG+">
+<field name="VAR" id="y3lmCOt|E!do_:OuQ^DR">PValue</field>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="2!dGc#bXkf5*LtN3obd}">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="],WnJd.[`O8%zOb[2q{B">
+<field name="VAR" id="@Pno$6$IC.:=Mb$?#,S}">headingError</field>
+</block>
+</value>
+</block>
+</value>
+</block>
+</next>
+</block>
+</statement>
+<next>
+<block type="comment" id="2)YE!Ny;?2-8BK)MPCP^">
+<field name="COMMENT">Set Motor Powers</field>
+<next>
+<block type="variables_set" id="`A6otf2z@NgeKbMWN{rf">
+<field name="VAR" id="QeK|#r)i`z.IW/%)RqA$">FrontLeftVel</field>
+<value name="VALUE">
+<block type="math_arithmetic" id="nk]0zu0FR1Dbkb%U}XTi">
+<field name="OP">ADD</field>
+<value name="A">
+<shadow type="math_number" id="^!*h;rktyz9NrfA^JIwy">
+<field name="NUM">1</field>
+</shadow>
+<block type="math_arithmetic" id="F4R[TJEe8I)-qw=xmPW5">
+<field name="OP">ADD</field>
+<value name="A">
+<shadow type="math_number" id="kFh@h_OO?](uIU9wf7hh">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="oV3eK39[0IIsj(UK=z1x">
+<field name="VAR" id="z;K59[);G3A-^^ut@4ZK">vx</field>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="}1y`MEXlLD*axR`?_Fw{">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="SE)%[na5QquI3d)qff@j">
+<field name="VAR" id="C$Lg6NwY7kEZxa=0R}c|">vy</field>
+</block>
+</value>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="IDo7cotJxvH=cSFdpVw2">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="Dg]N}m]=KCAGvWN_%Qb;">
+<field name="VAR" id="c?_NMZ~O06sZ]^:OUc@F">omega</field>
+</block>
+</value>
+</block>
+</value>
+<next>
+<block type="variables_set" id="1fiQ.~nn*FKQ*X?8R*s@">
+<field name="VAR" id="zCm8P-E*(#DT}Qhpg#R5">BackLeftVel</field>
+<value name="VALUE">
+<block type="math_arithmetic" id="(($3P_}6iE`//Sex(W]n">
+<field name="OP">ADD</field>
+<value name="A">
+<shadow type="math_number" id="/Myja+n~V8GH5{aLxRtG">
+<field name="NUM">1</field>
+</shadow>
+<block type="math_arithmetic" id="4pGVoHz6fXbz@^L[BR@{">
+<field name="OP">MINUS</field>
+<value name="A">
+<shadow type="math_number" id="L]@J4B/G?;@18XEgHf}g">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="!mL1V;sj@*fBx28Q3r1J">
+<field name="VAR" id="z;K59[);G3A-^^ut@4ZK">vx</field>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="0v7xUPIq/c6/!XC^!jt3">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="uipJ3X60vMzZi%9T::E2">
+<field name="VAR" id="C$Lg6NwY7kEZxa=0R}c|">vy</field>
+</block>
+</value>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="Fk8i[dnu0TFUL}R]=yqP">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="loXYKVYQq!2FgHQWs?xK">
+<field name="VAR" id="c?_NMZ~O06sZ]^:OUc@F">omega</field>
+</block>
+</value>
+</block>
+</value>
+<next>
+<block type="variables_set" id="nLgY(2g:5A;/+cQmu5*2">
+<field name="VAR" id="_2V/#MrS;50sg{zm/!^H">FrontRightVel</field>
+<value name="VALUE">
+<block type="math_arithmetic" id="c7ARq,akaE$zGsWN,#KG">
+<field name="OP">MINUS</field>
+<value name="A">
+<shadow type="math_number" id="%ir,#]aGfBLi.F^v5A?)">
+<field name="NUM">1</field>
+</shadow>
+<block type="math_arithmetic" id="`N?kv-r_u+U%ipc9a4^(">
+<field name="OP">MINUS</field>
+<value name="A">
+<shadow type="math_number" id="$/;KfQg@$Veb.p$c)S9-">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="%?(*FR$25JEfCb0P=4q2">
+<field name="VAR" id="z;K59[);G3A-^^ut@4ZK">vx</field>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="aaf3!68v2Q59]yHu^s?*">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="lY*NQB0DNYBWRGDbDMyL">
+<field name="VAR" id="C$Lg6NwY7kEZxa=0R}c|">vy</field>
+</block>
+</value>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="pI%5Mro_e1Z|Ju!@!-X;">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="N-G6_wvS?owPntjJ)Xw;">
+<field name="VAR" id="c?_NMZ~O06sZ]^:OUc@F">omega</field>
+</block>
+</value>
+</block>
+</value>
+<next>
+<block type="variables_set" id="Z0S`OQYMYn+-i#mq0n.}">
+<field name="VAR" id="[heEM`jT-JD8QXrC^($`">BackRightVel</field>
+<value name="VALUE">
+<block type="math_arithmetic" id="y#H(!_xCS[9}DY0i3h@.">
+<field name="OP">MINUS</field>
+<value name="A">
+<shadow type="math_number" id="nIL5v7aQ=,]k17;xJSS5">
+<field name="NUM">1</field>
+</shadow>
+<block type="math_arithmetic" id="0WX$]-{}{XI*|k9dD9*l">
+<field name="OP">ADD</field>
+<value name="A">
+<shadow type="math_number" id="iC%v-yiZJoR|DBEU$C,S">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="`vDBxM/R34qU1AdPjsmt">
+<field name="VAR" id="z;K59[);G3A-^^ut@4ZK">vx</field>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="]XzWe8^s(G=!dE-pBVQZ">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="q!DXYl82U?0ulmEO;k$;">
+<field name="VAR" id="C$Lg6NwY7kEZxa=0R}c|">vy</field>
+</block>
+</value>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="vuuA@W4[;d80.6=IIFnF">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="bZlB#9CP@|3LYIZvxtu@">
+<field name="VAR" id="c?_NMZ~O06sZ]^:OUc@F">omega</field>
+</block>
+</value>
+</block>
+</value>
+<next>
+<block type="comment" id="t4S598b?zmb6H?DG;{:n">
+<field name="COMMENT">Normalize Wheel Velocities</field>
+<next>
+<block type="variables_set" id="Hi(rUDm~*AL*|RN#O~tP">
+<field name="VAR" id="PZ;MHbTrU7-X=Hxk1P66">MaximumValue</field>
+<value name="VALUE">
+<block type="math_on_list" id="%Ah!Lg}hmtbR,^cA8=HS">
+<mutation op="MAX"/>
+<field name="OP">MAX</field>
+<value name="LIST">
+<block type="lists_create_with" id="u`j},?4j%Sa$ApWj+;/N">
+<mutation items="5"/>
+<value name="ADD0">
+<block type="math_single" id="V%M:~/-FamAzMwNpqwG(">
+<field name="OP">ABS</field>
+<value name="NUM">
+<shadow type="math_number" id="avQ+CGG}9@7h:m+36e]U">
+<field name="NUM">9</field>
+</shadow>
+<block type="variables_get" id="uHK*@@0~|O)D$`v!d(]v">
+<field name="VAR" id="zCm8P-E*(#DT}Qhpg#R5">BackLeftVel</field>
+</block>
+</value>
+</block>
+</value>
+<value name="ADD1">
+<block type="math_single" id="ZnyO7}bhx{k?BDh,o1.4">
+<field name="OP">ABS</field>
+<value name="NUM">
+<shadow type="math_number" id="~w:-}xzAzB=Q9V.seaSW">
+<field name="NUM">9</field>
+</shadow>
+<block type="variables_get" id="2TcsJNAr7+EavmM:^5]%">
+<field name="VAR" id="[heEM`jT-JD8QXrC^($`">BackRightVel</field>
+</block>
+</value>
+</block>
+</value>
+<value name="ADD2">
+<block type="math_single" id="2by5ft`s{|/))X}Mnqtw">
+<field name="OP">ABS</field>
+<value name="NUM">
+<shadow type="math_number" id="fQG`LUgVxtVl:pt8Y,u]">
+<field name="NUM">9</field>
+</shadow>
+<block type="variables_get" id="^^VZ0jd^P#+-V9;gAjkR">
+<field name="VAR" id="QeK|#r)i`z.IW/%)RqA$">FrontLeftVel</field>
+</block>
+</value>
+</block>
+</value>
+<value name="ADD3">
+<block type="math_single" id="KYqfKt%ux0RT*TxI/p|7">
+<field name="OP">ABS</field>
+<value name="NUM">
+<shadow type="math_number" id="%~MQZgY#2b|MM{;Kki=^">
+<field name="NUM">9</field>
+</shadow>
+<block type="variables_get" id="4o%2rCkG1A(;!4KtkCbt">
+<field name="VAR" id="_2V/#MrS;50sg{zm/!^H">FrontRightVel</field>
+</block>
+</value>
+</block>
+</value>
+<value name="ADD4">
+<block type="math_number" id="!]dKUUhfnG3zb+gi}gIn">
+<field name="NUM">1</field>
+</block>
+</value>
+</block>
+</value>
+</block>
+</value>
+<next>
+<block type="dcMotor_setProperty_Number" id="=zO:]e+K[!5y~q.AkoO7">
+<field name="IDENTIFIER">frontLeftAsDcMotor</field>
+<field name="PROP">Power</field>
+<data>{"IDENTIFIER":"frontLeft"}</data>
+<value name="VALUE">
+<shadow type="math_number" id="{]VGe2xw+rpE$nW~_m3t">
+<field name="NUM">1</field>
+</shadow>
+<block type="math_arithmetic" id="bb9U./TJ[t+3m4~2#rDt">
+<field name="OP">DIVIDE</field>
+<value name="A">
+<shadow type="math_number" id="j5rBbM98Ya*^f?(O^+A`">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="GZ`O3iuhH;e2g/ECgBUB">
+<field name="VAR" id="QeK|#r)i`z.IW/%)RqA$">FrontLeftVel</field>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="v{v{eeycy3XDCLp@;I=3">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="~wkMGGdW,h6OKQ]$x7_5">
+<field name="VAR" id="PZ;MHbTrU7-X=Hxk1P66">MaximumValue</field>
+</block>
+</value>
+</block>
+</value>
+<next>
+<block type="dcMotor_setProperty_Number" id="A1TU5HtpoH{p$=J!?C9[">
+<field name="IDENTIFIER">backLeftAsDcMotor</field>
+<field name="PROP">Power</field>
+<data>{"IDENTIFIER":"backLeft"}</data>
+<value name="VALUE">
+<shadow type="math_number" id="hcTy.a}(45+6ANs+wa)C">
+<field name="NUM">1</field>
+</shadow>
+<block type="math_arithmetic" id="cQ}@h49DOwK)R6tGbcQK">
+<field name="OP">DIVIDE</field>
+<value name="A">
+<shadow type="math_number" id="wHTUYH6WvTk1]cQumG`=">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="a~(ub6YzzmK?=ZCl(_lz">
+<field name="VAR" id="zCm8P-E*(#DT}Qhpg#R5">BackLeftVel</field>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="OvyfqBH#35_+#w7k%pfu">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="9;C;:kXz*n=)O0+8rA?*">
+<field name="VAR" id="PZ;MHbTrU7-X=Hxk1P66">MaximumValue</field>
+</block>
+</value>
+</block>
+</value>
+<next>
+<block type="dcMotor_setProperty_Number" id="QuR-xUZ[R~y:zYM:ttxo">
+<field name="IDENTIFIER">frontRightAsDcMotor</field>
+<field name="PROP">Power</field>
+<data>{"IDENTIFIER":"frontRight"}</data>
+<value name="VALUE">
+<shadow type="math_number" id="UdFF(hTmMT.=[z._d!XY">
+<field name="NUM">1</field>
+</shadow>
+<block type="math_arithmetic" id="jThMu6@b|)hfI[DuRwUb">
+<field name="OP">DIVIDE</field>
+<value name="A">
+<shadow type="math_number" id="Hx`da?5Ts%KH{B0u0bzq">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="C.2l!#XN?Y{a[].L8FtZ">
+<field name="VAR" id="_2V/#MrS;50sg{zm/!^H">FrontRightVel</field>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="qU%iwAMx#[x8@T56Wvig">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="ad]R}0pt^dCeortMX{|{">
+<field name="VAR" id="PZ;MHbTrU7-X=Hxk1P66">MaximumValue</field>
+</block>
+</value>
+</block>
+</value>
+<next>
+<block type="dcMotor_setProperty_Number" id=")y%xR~23?$[?_w*xy+co">
+<field name="IDENTIFIER">backRightAsDcMotor</field>
+<field name="PROP">Power</field>
+<data>{"IDENTIFIER":"backRight"}</data>
+<value name="VALUE">
+<shadow type="math_number" id="DYjA.ef0rTyWWL]g)D3.">
+<field name="NUM">1</field>
+</shadow>
+<block type="math_arithmetic" id="DNkh.P_iA5W:#-@oI4{2">
+<field name="OP">DIVIDE</field>
+<value name="A">
+<shadow type="math_number" id="^bNk$HFMvZi=kkHSMhl)">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="mw-MCtp!#?h#`1{aU!]v">
+<field name="VAR" id="[heEM`jT-JD8QXrC^($`">BackRightVel</field>
+</block>
+</value>
+<value name="B">
+<shadow type="math_number" id="#R-FndURAu9-H:6!s0_T">
+<field name="NUM">1</field>
+</shadow>
+<block type="variables_get" id="3}@Plu1Ihp0(JpTta*]d">
+<field name="VAR" id="PZ;MHbTrU7-X=Hxk1P66">MaximumValue</field>
+</block>
+</value>
+</block>
+</value>
+<next>
+<block type="telemetry_update" id="Il/_Kv^vY42Foa}=N4Ix"/>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</statement>
+</block>
+</next>
+</block>
+</statement>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</next>
+</block>
+</statement>
+</block>
+</xml>
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<Extra>
+<OpModeMeta flavor="TELEOP" group="" autoTransition="" />
+<Enabled value="true" />
+</Extra>
